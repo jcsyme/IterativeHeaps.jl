@@ -1,0 +1,8 @@
+name = "IterativeHeaps"
+uuid = "e285971d-2591-481a-9e11-e370fbcde40d"
+authors = ["jsyme <jsyme.bus@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+Distributed = "8ba89e20-285c-5b6f-9357-94700520ee1b"
+SharedArrays = "1a1011a3-84de-559e-8e89-a11a2f7dc383"
