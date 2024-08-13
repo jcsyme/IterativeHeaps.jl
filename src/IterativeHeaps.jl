@@ -22,6 +22,7 @@ import Base:
 export AbstractKHeap,
        FibonacciHeap,
        FibonacciNode,
+       fill_shared_array!,
        get_value,
        heap_data_type,
        heap_index_is_deactivated,
@@ -31,13 +32,15 @@ export AbstractKHeap,
        heap_push!,
        initialize_shared_array,
        initialize_vector,
-       KaryHeap6,
-       KaryHeap6Shared
+       KaryHeap,
+       KaryHeapShared,
+       SimpleQueue2
 
 
 ##  LOAD CODE
 
 include("InitializeVectors.jl")
+include("SimpleQueue.jl")
 include("FibonacciHeaps.jl")
 include("KaryHeaps.jl")
 

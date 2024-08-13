@@ -50,9 +50,9 @@ import Base:
 ####################
 
 # some types
-abstract type AbstractKHeap{T} end
-VMSOrNoth{T} = Union{Matrix{T}, SubArray{T}, Vector{T}, Nothing}
-SAOrNoth{T} = Union{SharedArray{T}, Vector{T}, Nothing}
+#abstract type AbstractKHeap{T} end
+VMOrNoth{T} = Union{Matrix{T}, Vector{T}, Nothing}
+SAOrNoth{T} = Union{SharedArray{T}, Nothing}
 
 """
 Construct a generic k-ary heap that supports heaping indices (e.g., as indexed
@@ -95,10 +95,10 @@ KaryHeap{T<:Real}(
     decide. Other than these two special values, `index2[i] == j` means that 
     `index[j-2] == i` and `data[j - 2]` is the corresponding item in the heap
 """
-struct KaryHeap{T<:Real} <: AbstractKHeap{T}
-    data::VMSOrNoth{T} # The items themselves in the heap
-    index::VMSOrNoth{Int64}# integer index associated with each item in the heap
-    index_lookup::VMSOrNoth{Int64} # reverse index that allows fo O(1) lookup
+struct KaryHeap{T<:Real} #<: AbstractKHeap{T}
+    data::VMOrNoth{T} # The items themselves in the heap
+    index::VMOrNoth{Int64}# integer index associated with each item in the heap
+    index_lookup::VMOrNoth{Int64} # reverse index that allows fo O(1) lookup
     max_size::Int64 # Maximum number of items in the heap
     size::Vector{Int64} # size of the heap
     k::Int64 # "k" in k-ary heap
@@ -106,9 +106,9 @@ struct KaryHeap{T<:Real} <: AbstractKHeap{T}
     function KaryHeap{T}(
         max_size::Int64,
         k::Int64;
-        data::VMSOrNoth{T} = nothing,
-        index::VMSOrNoth{Int64} = nothing,
-        index_lookup::VMSOrNoth{Int64} = nothing,
+        data::VMOrNoth{T} = nothing,
+        index::VMOrNoth{Int64} = nothing,
+        index_lookup::VMOrNoth{Int64} = nothing,
     ) where {T}
 
         (max_size < 1) && error("Error initializing KaryHeap: invalid max_size = $(max_size) (must be geq 1)")
@@ -178,7 +178,7 @@ KaryHeapShared{T<:Real}(
     decide. Other than these two special values, `index2[i] == j` means that 
     `index[j-2] == i` and `data[j - 2]` is the corresponding item in the heap
 """
-struct KaryHeapShared{T<:Real} <: AbstractKHeap{T}
+struct KaryHeapShared{T<:Real}#<: AbstractKHeap{T}
     data::SAOrNoth{T} # The items themselves in the heap
     index::SAOrNoth{Int64}# integer index associated with each item in the heap
     index_lookup::SAOrNoth{Int64} # reverse index that allows fo O(1) lookup
@@ -237,9 +237,9 @@ DESCRIPTIONS TAKEN FROM COMMENTS IN igraph indheap.h
     `index[j-2] == i` and `data[j - 2]` is the corresponding item in the heap
 """
 struct BinaryHeap3{T<:Real}
-    data::VMSOrNoth{T} # The items themselves in the heap
-    index::VMSOrNoth{Int64} # integer index associated with each item in the heap
-    index_lookup::VMSOrNoth{Int64} # reverse index that allows fo O(1) lookup
+    data::VMOrNoth{T} # The items themselves in the heap
+    index::VMOrNoth{Int64} # integer index associated with each item in the heap
+    index_lookup::VMOrNoth{Int64} # reverse index that allows fo O(1) lookup
     max_size::Int64 # Maximum number of items in the heap
     size::Vector{Int64} # size of the heap
     k::Int64 # "k" in k-ary heap
@@ -275,9 +275,9 @@ struct BinaryHeap3{T<:Real}
 
     function BinaryHeap3{T}(
         max_size::Int64;
-        data::VMSOrNoth{T} = nothing,
-        index::VMSOrNoth{Int64} = nothing,
-        index_lookup::VMSOrNoth{Int64} = nothing,
+        data::VMOrNoth{T} = nothing,
+        index::VMOrNoth{Int64} = nothing,
+        index_lookup::VMOrNoth{Int64} = nothing,
     ) where {T<:Real}
         
         return KaryHeap{T}(
@@ -434,7 +434,13 @@ heap_data_type(
 ```
 """
 function heap_data_type(
-    heap::AbstractKHeap{T},
+    heap::KaryHeap{T},
+) where {T}
+    return T
+end
+
+function heap_data_type(
+    heap::KaryHeapShared{T},
 ) where {T}
     return T
 end
