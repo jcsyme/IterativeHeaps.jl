@@ -14,7 +14,7 @@ Construct a simple queue.
 ##  Constructs and Initialization
 
 ```
-SimpleQueue2{T<:Real}(
+SimpleQueue{T<:Real}(
     max_size::Int64;
     index::Union{Vector{T}, Nothing}
 )
@@ -32,13 +32,13 @@ SimpleQueue2{T<:Real}(
     assumption that it is of size `max_size` and has no zeros
 - `index`: optional vector to specify as index.
 """
-struct SimpleQueue2{T<:Real}
+struct SimpleQueue{T<:Real}
     index::Union{Vector{T}, Nothing}
     len::Vector{Int64} # size of the heap
     max_size::Int64
     missing_val::T
 
-    function SimpleQueue2{T}(
+    function SimpleQueue{T}(
         max_size::Int64;
         force_unsafe_index_init::Bool = false,
         index::Union{Vector{T}, Nothing} = nothing,
@@ -49,7 +49,7 @@ struct SimpleQueue2{T<:Real}
         if isa(index, Vector)
 
             if force_unsafe_index_init
-                (length(index) != max_size) && error("Error initializing SimpleQueue2: vector index must have length $(max_size)")
+                (length(index) != max_size) && error("Error initializing SimpleQueue: vector index must have length $(max_size)")
                 len = max_size
             else
                 min_val = findall((x -> (x != missing_val), index))
@@ -80,7 +80,7 @@ end
 
 
 function Base.isempty(
-    heap::SimpleQueue2
+    heap::SimpleQueue
 )
     out = (heap.len[1] == 0)
     return out
@@ -89,7 +89,7 @@ end
 
 
 function Base.iterate(
-    iter::SimpleQueue2,
+    iter::SimpleQueue,
     state::Tuple = (iter, 1),
 )
     #iterator, count = state
@@ -101,7 +101,7 @@ end
 
 
 
-function Base.length(heap::SimpleQueue2)
+function Base.length(heap::SimpleQueue)
     return heap.len[1]
 end
 
@@ -121,7 +121,7 @@ Get the data element associated with the index `ind`
 
 ```
 get(
-    heap::SimpleQueue2,
+    heap::SimpleQueue,
     ind::Int64,
 )
 ```
@@ -137,7 +137,7 @@ get(
 
 """
 function Base.get(
-    heap::SimpleQueue2,
+    heap::SimpleQueue,
     ind::Int64;
     noval::Union{Real, Nothing} = nothing,
 )
@@ -164,7 +164,7 @@ heap_data_type(
 ```
 """
 function heap_data_type(
-    heap::SimpleQueue2{T},
+    heap::SimpleQueue{T},
 ) where {T}
     return T
 end
@@ -178,7 +178,7 @@ Check if index `ind` is in heap `h`. NOTE: Excludes deactivated indices.
 
 ```
 heap_index_is_in(
-    h::SimpleQueue2,
+    h::SimpleQueue,
     ind::Int64;
 )::Bool
 ```
@@ -196,7 +196,7 @@ heap_index_is_in(
 
 """
 function heap_index_is_in(
-    h::SimpleQueue2,
+    h::SimpleQueue,
     ind::Int64;
 )::Bool
 
@@ -221,14 +221,14 @@ heap_pop!(
 
 ##  Function Arguments
 
-- `queue`: SimpleQueue2 to pop minimum element from
+- `queue`: SimpleQueue to pop minimum element from
 
 
 ##  Keyword Arguments
 
 """
 @inline function heap_pop!(
-    heap::SimpleQueue2{T};
+    heap::SimpleQueue{T};
 ) where {T}
 
     (heap.len[1] == 0) && (return nothing)
@@ -259,14 +259,14 @@ Push a new element to the simple queue
 
 ```
 heap_push!(
-    heap::SimpleQueue2,
+    heap::SimpleQueue,
     val::T;
 )
 ```
 
 ```
 function heap_push!(
-    heap::SimpleQueue2{T},
+    heap::SimpleQueue{T},
     vals::Vector{T};
 )
 ```
@@ -274,7 +274,7 @@ function heap_push!(
 
 ##  Function Arguments
 
-- `heap`: SimpleQueue2 to push to
+- `heap`: SimpleQueue to push to
 - `val`: value to push to queue
 - `vals`: ordered vector of values to push
 
@@ -282,7 +282,7 @@ function heap_push!(
 
 """
 @inline function heap_push!(
-    heap::SimpleQueue2{T},
+    heap::SimpleQueue{T},
     val::T;
 ) where {T}
 
@@ -301,7 +301,7 @@ function heap_push!(
 end
 
 @inline function heap_push!(
-    heap::SimpleQueue2{T},
+    heap::SimpleQueue{T},
     vals::Vector{T};
 ) where {T}
 

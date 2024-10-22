@@ -597,8 +597,8 @@ heap_modify!(
     if push_on_missing & (heap.index_lookup[ind] == 0)
          heap_push!(
             heap, 
-            value_new, 
-            ind; 
+            ind,
+            value_new; 
             check_index = false,
         )
         return nothing
@@ -626,8 +626,8 @@ end
     if push_on_missing & (heap.index_lookup[ind, heap.index_lookup.pidx] == 0)
          heap_push!(
             heap, 
-            value_new, 
-            ind; 
+            ind,
+            value_new; 
             check_index = false,
         )
         return nothing
@@ -722,15 +722,15 @@ end
 
 
 """
-Add a key pair `ind => value` to the heap
+Add a key pair `key => value` to the heap
 
 ##  Constructs
 
 ```
 heap_push!(
     heap::AbstractKHeap{T},
-    value::T,
-    ind::Int64;
+    key::Int64,
+    value::T;
     check_index::Bool = false,
 )
 ```
@@ -739,8 +739,9 @@ heap_push!(
 ##  Function Arguments
 
 - `heap`: AbstractKHeap to perform swap on
+- `key`: key value (or index) to push
 - `value`: value to push
-- `index`: index, or key value, to push
+
 
 ##  Keyword Arguments
 
@@ -749,14 +750,14 @@ heap_push!(
 """
 @inline function heap_push!(
     heap::KaryHeap{T},
-    value::T,
-    ind::Int64;
+    key::Int64,
+    value::T;
     check_index::Bool = false,
 ) where {T}
     
     # if checking, don't allow pushing to the heap if a value has already been stored
     if check_index
-        (heap.index_lookup[ind] != 0) && (return nothing)
+        (heap.index_lookup[key] != 0) && (return nothing)
     end
 
     # update the size and vectors
@@ -764,8 +765,8 @@ heap_push!(
         heap.size[1] += 1
 
         heap.data[heap.size[1]] = value
-        heap.index[heap.size[1]] = ind
-        heap.index_lookup[ind] = heap.size[1] + 2
+        heap.index[heap.size[1]] = key
+        heap.index_lookup[key] = heap.size[1] + 2
     end
 
     # shift node upwards in tree
@@ -776,14 +777,14 @@ end
 
 @inline function heap_push!(
     heap::KaryHeapShared{T},
-    value::T,
-    ind::Int64;
+    key::Int64,
+    value::T;
     check_index::Bool = false,
 ) where {T}
     
     # if checking, don't allow pushing to the heap if a value has already been stored
     if check_index
-        (heap.index_lookup[ind, heap_index_lookup.pidx] != 0) && (return nothing)
+        (heap.index_lookup[key, heap_index_lookup.pidx] != 0) && (return nothing)
     end
 
     # update the size and vectors
@@ -792,8 +793,8 @@ end
         sz = heap.size[heap.size.pidx]
 
         heap.data[sz, heap.data.pidx] = value
-        heap.index[sz, heap.index.pidx] = ind
-        heap.index_lookup[ind, heap.index_lookup.pidx] = sz + 2
+        heap.index[sz, heap.index.pidx] = key
+        heap.index_lookup[key, heap.index_lookup.pidx] = sz + 2
     end
 
     # shift node upwards in tree

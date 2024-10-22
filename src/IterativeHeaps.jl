@@ -34,7 +34,7 @@ export AbstractKHeap,
        initialize_vector,
        KaryHeap,
        KaryHeapShared,
-       SimpleQueue2
+       SimpleQueue
 
 
 ##  LOAD CODE
