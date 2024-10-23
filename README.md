@@ -78,9 +78,11 @@ FibonacciHeap{U, T}(
 The heaps do not require any data; instead, they are useful for many coding applications, where users can push a key/value pair to the heap (inline) and pop them in ascending order according to the value. 
 
 
+
 ## Project information
 
-ADD HERE
+The authors are grateful to RAND Center for Global Risk and Security Advisory Board members Michael Munemann and Paul Cronson for funding this project. All code was developed between April 2023 and October 2024.
+
 
 
 ## References/Bibliography
