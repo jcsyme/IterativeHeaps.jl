@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+title: IterativeHeaps.jl
+message: Suggested Citation
+type: software
+authors:
+  - email: jsyme@rand.org
+    given-names: James
+    family-names: Syme
+    affiliation: RAND
+repository-code: >-
+  MISSING
+url: MISSING
+abstract: >-
+  Implementation of K-ary (arbitrary K) and fibonacci heaps for use in 
+  distributed, iterative environments. Reduces memory leaks and pressure from
+  excessive creation and destruction of Heaps by allowing heaps to access
+  DistributedArrays.
+license: MIT
