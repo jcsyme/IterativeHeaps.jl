@@ -24,8 +24,9 @@ export AbstractKHeap,                 # start with structs
        FibonacciNode,
        KaryHeap,
        KaryHeapShared,
-       SimpleQueue
-       fill_shared_array!,            # add in functions
+       SimpleQueue,
+       fill_and_randomize_queue!,     # add in functions
+       fill_shared_array!,            
        get_value,
        heap_data_type,
        heap_index_is_deactivated,
