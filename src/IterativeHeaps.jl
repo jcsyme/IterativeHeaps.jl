@@ -19,10 +19,13 @@ import Base:
     size
 
 
-export AbstractKHeap,
+export AbstractKHeap,                 # start with structs
        FibonacciHeap,
        FibonacciNode,
-       fill_shared_array!,
+       KaryHeap,
+       KaryHeapShared,
+       SimpleQueue
+       fill_shared_array!,            # add in functions
        get_value,
        heap_data_type,
        heap_index_is_deactivated,
@@ -32,9 +35,8 @@ export AbstractKHeap,
        heap_push!,
        initialize_shared_array,
        initialize_vector,
-       KaryHeap,
-       KaryHeapShared,
-       SimpleQueue
+       reset!
+       
 
 
 ##  LOAD CODE

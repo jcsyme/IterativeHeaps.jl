@@ -53,7 +53,9 @@ struct SimpleQueue{T<:Real}
                 len = max_size
             else
                 min_val = findall((x -> (x != missing_val), index))
-                len = minimum(min_val) - 1
+                len = length(min_val)
+                index = [index[min_val]; missing_val*ones(T, max_size - len)]
+                
             end
         else
             index = initialize_vector(index, max_size, T)
@@ -113,6 +115,52 @@ end
 ###################
 #    FUNCTIONS    #
 ###################
+
+"""Fill a queue with random order. If setting `n`, fills up to `n` elements;
+    otherwise, fills the entire queue.
+
+# Constructs
+
+```
+fill_and_randomize_queue!(
+    queue::SimpleQueue,
+    n::Int64,
+)
+```
+
+```
+fill_and_randomize_queue!(
+    queue::SimpleQueue,
+)
+```
+
+Fill 
+"""
+function fill_and_randomize_queue!(
+    queue::SimpleQueue,
+    n::Int64,
+)
+    reset!(queue)
+    heap_push!(
+        queue,
+        shuffle(1:max(min(queue.max_size, n), 0))
+    )
+    
+    return nothing
+end
+
+function fill_and_randomize_queue!(
+    queue::SimpleQueue,
+)
+    fill_and_randomize_queue!(
+        queue,
+        queue.max_size,
+    )
+    
+    return nothing
+end
+
+
 
 """
 Get the data element associated with the index `ind`
@@ -323,4 +371,16 @@ end
     return nothing
 end
 
+
+
+"""Reset a queue by filling with missing_vals and dropping length
+    to 0.
+"""
+function reset!(
+    queue::SimpleQueue,
+)
+    
+    fill!(queue.index, queue.missing_val)
+    queue.len[1] = 0
+end
 
