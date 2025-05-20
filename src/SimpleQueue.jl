@@ -82,8 +82,8 @@ end
 
 
 function Base.isempty(
-    heap::SimpleQueue
-)
+    heap::SimpleQueue{T}
+) where {T}
     out = (heap.len[1] == 0)
     return out
 end
@@ -91,9 +91,9 @@ end
 
 
 function Base.iterate(
-    iter::SimpleQueue,
+    iter::SimpleQueue{T},
     state::Tuple = (iter, 1),
-)
+)  where {T}
     #iterator, count = state
     (state[2] > iter.size[1]) && (return nothing)
     element = iter.index[state[2]]
@@ -103,7 +103,9 @@ end
 
 
 
-function Base.length(heap::SimpleQueue)
+function Base.length(
+    heap::SimpleQueue{T}
+) where {T}
     return heap.len[1]
 end
 
@@ -123,23 +125,23 @@ end
 
 ```
 fill_and_randomize_queue!(
-    queue::SimpleQueue,
+    queue::SimpleQueue{T},
     n::Int64,
 )
 ```
 
 ```
 fill_and_randomize_queue!(
-    queue::SimpleQueue,
+    queue::SimpleQueue{T},
 )
 ```
 
 Fill 
 """
 function fill_and_randomize_queue!(
-    queue::SimpleQueue,
+    queue::SimpleQueue{T},
     n::Int64,
-)
+) where {T}
     reset!(queue)
     heap_push!(
         queue,
@@ -150,8 +152,8 @@ function fill_and_randomize_queue!(
 end
 
 function fill_and_randomize_queue!(
-    queue::SimpleQueue,
-)
+    queue::SimpleQueue{T},
+) where {T}
     fill_and_randomize_queue!(
         queue,
         queue.max_size,
@@ -169,7 +171,7 @@ Get the data element associated with the index `ind`
 
 ```
 get(
-    heap::SimpleQueue,
+    heap::SimpleQueue{T},
     ind::Int64,
 )
 ```
@@ -185,10 +187,10 @@ get(
 
 """
 function Base.get(
-    heap::SimpleQueue,
+    heap::SimpleQueue{T},
     ind::Int64;
     noval::Union{Real, Nothing} = nothing,
-)
+) where {T}
     # return no value?
     !heap_index_is_in(heap, ind) && (return noval)
 
@@ -226,7 +228,7 @@ Check if index `ind` is in heap `h`. NOTE: Excludes deactivated indices.
 
 ```
 heap_index_is_in(
-    h::SimpleQueue,
+    h::SimpleQueue{T},
     ind::Int64;
 )::Bool
 ```
@@ -244,9 +246,9 @@ heap_index_is_in(
 
 """
 function heap_index_is_in(
-    h::SimpleQueue,
+    h::SimpleQueue{T},
     ind::Int64;
-)::Bool
+)::Bool where {T}
 
     out = (ind < h.len[1] + 1) & (ind > 0)
 
@@ -307,7 +309,7 @@ Push a new element to the simple queue
 
 ```
 heap_push!(
-    heap::SimpleQueue,
+    heap::SimpleQueue{T},
     val::T;
 )
 ```
@@ -377,8 +379,8 @@ end
     to 0.
 """
 function reset!(
-    queue::SimpleQueue,
-)
+    queue::SimpleQueue{T},
+) where {T}
     
     fill!(queue.index, queue.missing_val)
     queue.len[1] = 0
