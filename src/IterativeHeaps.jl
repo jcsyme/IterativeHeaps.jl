@@ -7,7 +7,9 @@ module IterativeHeaps
 greet() = print("Iterative Heaps")
 
 using Distributed
+using StatsBase
 using SharedArrays
+
 
 
 import Base:

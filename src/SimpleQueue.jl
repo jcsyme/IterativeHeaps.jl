@@ -145,7 +145,7 @@ function fill_and_randomize_queue!(
     reset!(queue)
     heap_push!(
         queue,
-        shuffle(1:max(min(queue.max_size, n), 0))
+        StatsBase.shuffle(1:max(min(queue.max_size, n), 0))
     )
     
     return nothing
